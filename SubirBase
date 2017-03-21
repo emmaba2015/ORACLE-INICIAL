@@ -1,0 +1,9 @@
+Este es el valor por defecto para arrancar, montar y abrir una base datos.
+STARTUP;
+Arrancamos la base de datos (instancia) pero sin montarla, se suele usar el la fase de creación de una base de datos
+STARTUP NOMOUNT;
+Arrancamos la base de datos montada, normalmente se usa en modo para tareas de mantenimiento. 
+STARTUP MOUNT; 
+Arrancamos la base de datos en modo restringido, solo usuario que tengan privilegios de CREATE SESSION y 
+RESTRICTED SESSION podrán conectarse.
+STARTUP RESTRICT;
