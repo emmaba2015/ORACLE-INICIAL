@@ -1,0 +1,19 @@
+#La Base de Datos no se parará si hay usuarios conectados.
+
+shutdown normal;
+
+#Después de ejecutarla, los clientes no podrán comenzar nuevas transacciones, y la base de datos se parará cuando todas se hayan confirmado
+(commit) o anulado (rollback).
+
+shutdown transactional;
+
+Todas las sentencias SQL se terminan inmediatamente, no se espera a que se desconecten los usuarios. 
+Las transacciones no confirmadas (commit) SI se deshacen, por lo que la Base de Datos se podrá mantener consistente.
+
+shutdown immediate;
+
+#Se usa cuando muere un proceso background y no se puede tirar la Base de Datos en modo normal o immediate. 
+Las transacciones no confirmadas (commit) NO se deshacen y la Base de Datos puede necesitar crash recovery durante el siguiente startup.
+
+shutdown abort;
+
