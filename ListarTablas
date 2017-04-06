@@ -1,0 +1,32 @@
+DBA_SEGMENTS: Contiene todos los segmentos de la base de datos, esto incluye tablas, indices y segmentos de rollback entre otros:
+
+SQL> select distinct SEGMENT_TYPE from DBA_SEGMENTS;
+
+Así, la tabla DBA_SEGMENTS contiene la tabla DBA_TABLES más el resto de segmentos de la base de datos:
+
+SQL> select count(*) from DBA_SEGMENTS;
+
+  COUNT(*)
+----------
+      5783
+
+SQL> select count(*) from DBA_TABLES;
+
+  COUNT(*)
+----------
+      2083
+      
+OWNER: Propietario del segmento
+SEGMENT_NAME: Nombre del segmento
+TABLESPACE_NAME: Nombre del tablespace al que pertenece
+
+SQL> select TABLE_NAME from DBA_TABLES;
+
+Para contar todas las tablas del tablespace UNIT001 haríamos lo siguiente:
+
+SQL> select count(*) from DBA_TABLES where TABLESPACE_NAME='UNIT001';
+
+Y para contar las tablas de cada usuario podríamos hacer lo siguiente:
+
+SQL> select count(*), OWNER from DBA_TABLES group by OWNER;
+
