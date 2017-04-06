@@ -1,0 +1,13 @@
+Si, por ejemplo, queremos recuperar algunos datos de todos los registros de una tabla de clientes ordenados por fecha de alta, sólo hay que abrir 
+una sesión de SQLPlus y ejecutar esta serie de comandos:
+
+
+SQL> SET HEADING OFF
+SQL> SET FEEDBACK OFF
+SQL> SPOOL C:\datos_de_clientes.txt
+SQL> SELECT 'Cliente ' || CLI_NOMBRE || ', ' || CLI_NIF || '. Fecha alta: ' || TO_CHAR(CLI_FECHAALTA,'YYYY-MM-DD') 
+     FROM TABLA_CLIENTES
+     ORDER BY CLI_FECHAALTA DESC;
+SQL> SPOOL OFF;
+SQL> SET FEEDBACK ON
+SQL> SET HEADING ON
