@@ -1,0 +1,3 @@
+Para indicar al sqlplus que lea el fichero y lo ejecute simplemente deberemos indicarlo con una arroba:
+
+SQL> @/tmp/scripts/Prueba.sql
