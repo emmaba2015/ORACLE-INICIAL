@@ -1,0 +1,22 @@
+  Mostrar parámetro Background_DUMP_DEST
+  
+SQL> show parameter background_dump_dest;
+  
+  Mediante consulta ver ubicación de archivos de alerta (8i,9i,10g,11g)
+  
+SQL> set linesize 300;
+SQL> column value format a300;
+SQL> select value from v$parameter where name='background_dump_dest';
+
+  Cuando la base esta inactiva (SOLARIS, LINUX)
+find / -name alert_SID.log 2> / dev / null  
+
+  Ver archivo de alerta en version 11g y 12g 
+  
+set heading off pages 0 trimspool on lines 120 feedback off echo off;
+  
+ with  DD (DDV) as (SELECT VALUE DDV FROM V$parameter WHERE NAME='diagnostic_dest'),
+       LCD (LCDV)as (select LOWER(value) LCDV FROM V$parameter WHERE NAME='db_name'),
+       INST (INSTV) as (select UPPER(value) INSTV FROM V$parameter WHERE NAME='instance_name')
+       select * from (select DDV||'/diag/rdbms/'||LCDV||'/'||INSTV||'/trace' from DD,LCD,INST ) where rownum= 1;
+quit;
