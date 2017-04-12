@@ -1,0 +1,43 @@
+  Crear usuario basico (sin permisos)
+
+SQL>create user prueba identified by prueba default tablespace users;
+
+  Ahora expliquemos la instrucción:
+  create user prueba .- Crea un usuario nuevo identificado por “prueba”, es decir es el id del usuario.
+  identified by passprueba  .- Sencillamente es el password del usuario que creamos
+  default tablespace users; .- Se especifica el espacio de tabla USERS, si se omitiera, los objetos creados por el usuario “prueba”, se 
+  almacenarán por defecto en el tablespace System que es el lugar donde se encuentra almacenado el diccionario de datos, 
+  finalmente concluimos con “;” para que se procese la instrucción.
+  
+  CREATE USER username
+      IDENTIFIED {BY password | EXTERNALLY | GLOBALLY AS 'external_name'}
+         options;
+
+Donde options:
+   
+  DEFAULT TABLESPACE tablespace
+  TEMPORARY TABLESPACE tablespace
+  QUOTA int {K | M} ON tablespace
+  QUOTA UNLIMITED ON tablespace
+  PROFILE profile_name
+  PASSWORD EXPIRE
+  ACCOUNT {LOCK|UNLOCK}
+   
+Crea un usuario con todos los derechos para guardar datos o crear objetos:
+
+  DROP USER miusuario CASCADE;
+
+  CREATE USER miusuario IDENTIFIED BY miclavesecreta
+       DEFAULT TABLESPACE data  
+       TEMPORARY TABLESPACE temp
+       QUOTA UNLIMITED ON data;
+
+  CREATE ROLE programador;
+
+  GRANT CREATE session, CREATE table, CREATE view, 
+        CREATE procedure,CREATE synonym,
+        ALTER table, ALTER view, ALTER procedure,ALTER synonym,
+        DROP table, DROP view, DROP procedure,DROP synonym,
+        TO conn;
+
+  GRANT programador TO miusuario;
