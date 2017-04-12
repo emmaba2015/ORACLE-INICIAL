@@ -1,0 +1,15 @@
+    Si has necesitado entrar así porque no recordabas la contraseña de algún usuario, ya puedes modificarla/s para poder utilizarlo/s 
+    después:
+SQL> alter user nombre_usuario identified by nuevo_password;
+
+    Para bloquear un usuario
+SQL> alter user username account lock;
+
+    Para desbloquear un usuario
+SQL> alter user username account unlock;
+
+    Puedo hacer varias modificaciones en la misma consulta, en este caso se cambia el pass se bloquea la cuenta y el pass expira.
+
+SQL> alter user ctxsys identified by 0bscur3 account lock password expire;
+
+
