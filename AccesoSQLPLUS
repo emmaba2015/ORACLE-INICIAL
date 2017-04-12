@@ -1,0 +1,45 @@
+  Desde Windows
+  Abre una ventana de comandos. La ventana de comandos estará en la sección "Accesorios" del menú "Inicio".
+  Escribe el comando "sqlplus username/password@database" para iniciar SQL Plus. Reemplaza la palabra "username" con tu nombre de usuario 
+  de Oracle. Reemplaza la palabra "password" con tu contraseña de Oracle. Reemplaza la palabra "database" con el nombre de base de datos a 
+  la que te quieres conectar. Se te presentará una interfaz "SQL>" cuando estés conectado a la base de datos.
+
+"sqlplus username/password@database"
+
+  Para entrar como usuario sysdba
+  
+"sqlplus / as sysdba"
+
+  Comando CONNECT
+  En sqlplus se indicará con el comando CONNECT, que tiene la siguiente sintaxis:
+
+CONNECT [usuario/clave[@servicio][AS {SYSOPER|SYSDBA}]]
+  En este caso, sólo la palabra CONNECT es imprescindible. Si no se indica nada más, el sistema pide el login y el password, y se conecta 
+  como un usuario normal a la base de datos global (base de datos o servicio por defecto) de Oracle. El comando CONNECT también se puede hacer en SQL*Plus WorkSheet, pero no de forma interactiva. Es decir, se admitirían las tres últimas sentencias del siguiente ejemplo, pero no la primera ya que requeriría que el usuario teclease el login y el password, y en SQL*Plus WorkSheet este tipo de interactividad no es posible, ya que el usuario teclea los comandos en una ventana y la respuesta se da en otra.
+  Ejemplos de conexiones:
+
+CONNECT      -- Pide login/password y se conecta a la BD por defecto, 
+             -- como usuario normal
+
+CONNECT scott/tiger  -- Se conecta como usuario scott con permisos normales 
+                     -- a la BD por defecto
+
+CONNECT SYSTEM/manager@EMPRESA  -- Se conecta como usuario SYS con permisos 
+                                -- normales la BD por EMPRESA
+
+CONNECT SYSTEM/manager@EMPRESA AS SYSDBA -- Se conecta como usuario SYS con 
+                                         -- permisos de DBA a la BD por EMPRESA
+Usando sqlplus los parámetros de conexión se pueden pasar directamente como argumentos del programa, en la línea de comandos. 
+Así, ejecutando sqlplus SYSTEM/manager@EMPRESA se ejecutaría el programa seguido de la tercera sentencia de conexión del ejemplo anterior.
+
+En Linux
+. oraenv
+sqlplus / as sysdba
+
+
+En Solaris
+export ORACLE_SID=prod
+sqlplus / as sysdba
+
+
+  
