@@ -1,0 +1,6 @@
+•• Consulta Oracle SQL sobre la vista que muestra el estado de la base de datos
+
+select * from v$instance;
+•• Consulta Oracle SQL que muestra si la base de datos está abierta
+
+select status from v$instance;
