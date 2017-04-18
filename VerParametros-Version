@@ -1,0 +1,14 @@
+  PARÁMETROS DE LA BASE DE DATOS
+  Vista que muestra los parámetros generales de Oracle:
+
+SELECT * FROM v$system_parameter;
+  o también
+
+SHOW PARAMETERS valor_a_buscar;
+
+  PRODUCTOS ORACLE INSTALADOS Y LA VERSIÓN
+
+SELECT * FROM product_component_version;
+  OBTENER LA IP DEL SERVIDOR DE LA BASE DE DATOS ORACLE DATABASE
+
+SELECT utl_inaddr.get_host_address IP FROM DUAL;
