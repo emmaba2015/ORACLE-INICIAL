@@ -1,0 +1,75 @@
+ESPACIO UTILIZADO POR LOS TABLESPACES
+Consulta SQL para el DBA de Oracle que muestra los tablespaces, el espacio utilizado, el espacio libre y los ficheros de datos de los mismos
+
+SELECT t.tablespace_name                      "Tablespace",
+       t.status                               "Estado",
+       ROUND (MAX (d.bytes) / 1024 / 1024, 2) "MB Tamaño",
+       ROUND ((MAX (d.bytes) / 1024 / 1024)
+                  - (SUM (DECODE (f.bytes, NULL, 0, f.bytes)) / 1024 / 1024),
+               2)                             "MB Usados",
+       ROUND (SUM (DECODE (f.bytes, NULL, 0, f.bytes)
+                   ) / 1024 / 1024, 2)        "MB Libres",
+       t.pct_increase                         "% incremento",
+       SUBSTR (d.file_name, 1, 80)            "Fichero de datos"
+  FROM DBA_FREE_SPACE f, DBA_DATA_FILES d, DBA_TABLESPACES t
+ WHERE t.tablespace_name = d.tablespace_name
+   AND f.tablespace_name(+) = d.tablespace_name
+   AND f.file_id(+) = d.file_id
+ GROUP BY t.tablespace_name,
+       d.file_name,
+       t.pct_increase,
+       t.status
+ ORDER BY 1, 3 DESC;
+ 
+TAMAÑO OCUPADO POR LA BASE DE DATOS
+
+SELECT SUM(BYTES)/1024/1024 MB 
+  FROM DBA_EXTENTS; 
+  
+TAMAÑO DE LOS FICHEROS DE DATOS DE LA BASE DE DATOS
+
+SELECT SUM(bytes)/1024/1024 MB 
+  FROM dba_data_files;
+  
+TAMAÑO OCUPADO POR UNA TABLA CONCRETA SIN INCLUIR LOS ÍNDICES DE LA MISMA
+
+SELECT SUM(bytes)/1024/1024 MB 
+  FROM user_segments
+ WHERE segment_type='TABLE'
+   AND segment_name='NOMBRETABLA';
+   
+TAMAÑO OCUPADO POR UNA TABLA CONCRETA INCLUYENDO LOS ÍNDICES DE LA MISMA
+
+SELECT SUM(bytes)/1024/1024 Table_Allocation_MB 
+  FROM user_segments
+ WHERE segment_type in ('TABLE','INDEX')
+   AND(segment_name='NOMBRETABLA' 
+       OR segment_name IN (SELECT index_name 
+			     FROM user_indexes 
+		            WHERE table_name='NOMBRETABLA'));
+                
+TAMAÑO OCUPADO POR UNA COLUMNA DE UNA TABLA
+
+SELECT SUM(vsize('Nombre_Columna'))/1024/1024 MB 
+  FROM Nombre_Tabla;
+ESPACIO OCUPADO POR USUARIO
+
+SELECT owner, SUM(BYTES)/1024/1024 
+  FROM DBA_EXTENTS MB
+ GROUP BY owner;
+ 
+ESPACIO OCUPADO POR LOS DIFERENTES SEGMENTOS (TABLAS, ÍNDICES, UNDO, ROLLBACK, CLUSTER, …)
+
+SELECT SEGMENT_TYPE, SUM(BYTES)/1024/1024 
+  FROM DBA_EXTENTS MB
+ GROUP BY SEGMENT_TYPE;
+ 
+OCUPACIÓN DE TODOS LOS OBJETOS DE LA BASE DE DATOS
+Espacio ocupado por todos los objetos de la base de datos, muestra primero los objetos que más ocupan
+
+SELECT SEGMENT_NAME,
+       SUM(BYTES)/1024/1024 
+  FROM DBA_EXTENTS MB
+ GROUP BY SEGMENT_NAME
+ ORDER BY 2 DESC;
+ 
