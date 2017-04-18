@@ -1,0 +1,25 @@
+LOCALIZAR UBICACIÓN Y NOMBRE DEL FICHERO SPFILE
+Como el fichero de parámetros puede haberse cambiado de lugar, se puede localizar de la siguiente manera:
+
+  SELECT value FROM v$system_parameter WHERE name = 'spfile';
+  
+LOCALIZAR UBICACIÓN Y NOMBRE DE LOS FICHEROS DE CONTROL
+Como el fichero de parámetros puede haberse cambiado de lugar, se puede localizar de la siguiente manera
+
+Ubicación y número de ficheros de control:
+
+  SELECT value FROM v$system_parameter WHERE name = 'control_files';
+  
+TODOS LOS FICHEROS DE DATOS Y SU UBICACIÓN
+
+  SELECT * FROM V$DATAFILE;
+FICHEROS TEMPORALES
+
+  SELECT * FROM V$TEMPFILE;
+
+FICHEROS DE REDO LOG
+
+  SELECT member FROM v$logfile;
+
+FICHEROS DE ARCHIVE LOG:
+  SHOW parameters archive_dest;
