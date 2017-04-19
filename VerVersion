@@ -1,0 +1,8 @@
+Para ello tenemos la vista dinámica v$version que nos da los datos:
+
+  select * from v$version;
+  
+O bien desde la tabla product_component_version podemos obtener los mismos datos por columnas:
+
+  select * from product_component_version; 
+    
