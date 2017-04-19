@@ -1,0 +1,26 @@
+Realizar un export (backup) de Oracle.
+Existen varios métodos para realizar backups de bases de datos Oracle. Vamos a ver como usar el clásico exp:
+
+Primero de todo debemos definir algunas variables de entorno:
+
+  export ORACLE_SID=prod
+  export ORACLE_HOSTNAME=db
+  export ORACLE_HOME=/oracle/product/10.2.0/db_1
+
+A continuación ya podremos lanzar el exp:
+
+  exp 'system/syspass' FULL=y DIRECT=y FILE=/oracle/backups/backup.$(date +%Y%m%d) CONSISTENT=y STATISTICS=none 
+  log=/oracle/backups/log.$(date +%Y%m%d)
+
+Los parámetros son los siguientes:
+
+FULL=y: Indicamos que queremos la base de datos entera
+DIRECT=y: Mediante el uso de esta opción augmenta el rendimiento saltándose pasos intermedios
+FILE=<ruta del fichero>: Mediante este parámetro indicamos el fichero donde queremos hacer el backup
+CONSISTENT=y: Indica si debe asegurar la consistencia de los datos usando. Debemos tener en cuenta que tiene que tener suficiente espacio 
+en el segmento de undo si no queremos que finalice con un error “ORA-1555 Snapshot too old“
+STATISTICS=none: Indica el nivel de estadísticas que queremos que nos genere. Como se va a realizar como un proceso batch no vale la pena gastar recursos en generarlas.
+GRANTS=y: Indica si queremos que incluya los grants en el export.
+LOG=<ruta del log>: Mediante este parámetro indicamos el fichero donde queremos dejar log del export.
+
+
