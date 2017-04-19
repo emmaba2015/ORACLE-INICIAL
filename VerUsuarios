@@ -1,0 +1,10 @@
+OBTENER LOS USUARIOS DE UNA BASE DE DATOS
+
+  SELECT USERNAME FROM DBA_USERS;
+  
+Para ver desde sqlplus el usuario con el que estamos conectados podemos realizar la consulta “SHOW USER“:
+
+  show user;
+  USER is "EJEMPLO"  
+  
+  
