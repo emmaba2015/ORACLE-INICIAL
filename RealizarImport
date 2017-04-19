@@ -1,0 +1,25 @@
+Realizar un import en una bases de datos Oracle mediante imp
+En el caso que queramos importar el contenido completo del fichero nos podremos limitar a las siguientes opciones:
+
+FILE=<ruta del fichero>: Fichero con el export de la base de datos
+FULL=y: Indicamos que queremos importar todo el contenido
+ 
+  export ORACLE_SID=prod
+  export ORACLE_HOSTNAME=db
+  export ORACLE_HOME=/oracle/product/10.2.0/db_1
+
+A continuación ya podremos lanzar el imp:
+
+imp 'system/sys2009pass' FILE=/oracle/backups/backup.20091003  FULL=y
+
+En el caso de querer una carga parcial del fichero podemos usar en su lugar los siguientes parámetros:
+
+FROMUSER=: Indicamos el usuario origen de los datos
+TOUSER=: Indicamos el usuario destino de los datos
+El comando a ejecutar para importar los datos del usuario TORELLO al usuario MARTI sería:
+
+imp 'system/sys2009pass' FILE=/oracle/backups/backup.20091003  FROMUSER=TORELLO TOUSER=MARTI
+En el caso que el import falle con el error “ORA-01562: Failed to extend rollback segment” deberemos añadir la siguiente opción:
+
+COMMIT=y: Esta opción penalizará el imp, haciendo que tarde más tiempo, ya que hace el commit por tabla en lugar de hacerlo al final 
+de la carga
