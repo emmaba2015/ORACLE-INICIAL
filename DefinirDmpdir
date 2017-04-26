@@ -1,0 +1,22 @@
+
+  Crear el data pump directory:
+
+SQL> CREATE DIRECTORY dmpdir AS '/backup/exports/datapump';
+Directory created.
+
+  Crear o reemplazar el data pump directory:
+SQL> CREATE DIRECTORY dmpdir AS '/backup/exports/datapump';
+
+  Dar privilegios de lectura y escritura a un usuario:
+  
+SQL> GRANT read, write ON DIRECTORY dmpdir TO scott;
+Grant succeeded.
+
+  Para ver el data pump dir creado por defecto:
+
+SQL> SELECT directory_path FROM dba_directories WHERE directory_name = 'DATA_PUMP_DIR';
+
+  Para ver el data pump dir creado en los pasos anteriores:
+  
+SQL> SELECT directory_path FROM dba_directories WHERE directory_name = 'dmpdir';  
+
