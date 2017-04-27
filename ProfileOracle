@@ -30,9 +30,13 @@ Modificación de PROFILE
 
   ALTER PROFILE default LIMIT IDLE_TIME 20;
   
-Para borrar un perfil, nada más tenemos que aplicar el comando drop..
+Para borrar un perfil, nada más tenemos que aplicar el comando drop.
 
   drop profile app_user;  
+  
+Para borrar un perfil, con uno o mas usuarios asignados
+
+  drop profile lim_prueba cascade;
   
 Asignacion de PROFILE
 
