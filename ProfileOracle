@@ -1,0 +1,51 @@
+Ver todos los profile definidos:
+
+  SELECT * FROM DBA_PROFILES ORDER BY PROFILE;
+  
+Ver un profile especifico:
+
+  select * from   dba_profiles where  profile = 'LIM_PRUEBA' order by resource_name;
+  
+Creacion de PROFILE
+
+  CREATE PROFILE app_user LIMIT 
+    SESSIONS_PER_USER                 2   --
+    CPU_PER_SESSION               10000   -- decimas de segundo
+    CPU_PER_CALL                      1   -- decimas de segundo
+    CONNECT_TIME              UNLIMITED   -- minutos
+    IDLE_TIME                        30   -- minutos
+    LOGICAL_READS_PER_SESSION   DEFAULT   -- DB BLOCKS
+    LOGICAL_READS_PER_CALL      DEFAULT   -- DB BLOCKS
+    -- COMPOSITE_LIMIT          DEFAULT   -- 
+    PRIVATE_SGA                     20M   -- 
+    FAILED_LOGIN_ATTEMPTS             3   --
+    PASSWORD_LIFE_TIME               30   -- dias
+    PASSWORD_REUSE_TIME              12   --
+    PASSWORD_REUSE_MAX        UNLIMITED   -- 
+    PASSWORD_LOCK_TIME          DEFAULT   -- dias
+    PASSWORD_GRACE_TIME               2   -- dias
+    PASSWORD_VERIFY_FUNCTION       NULL;
+  
+Modificación de PROFILE
+
+  ALTER PROFILE default LIMIT IDLE_TIME 20;
+  
+Para borrar un perfil, nada más tenemos que aplicar el comando drop..
+
+  drop profile app_user;  
+  
+Asignacion de PROFILE
+
+Cuando ya tenemos creado nuestro perfil, podemos asignarlo a los distintos usuarios por medio de un alter user, o al momento de 
+crearlos con create user.
+
+  alter user nombre_usuario profile nombre_perfil;
+
+  create user nombre_usuario
+  identified by        password_usuario
+  default tablespace   nombre_tbs
+  temporary tablespace nombre_tbs
+  profile              nombre_perfil;
+
+  
+  
