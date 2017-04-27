@@ -1,0 +1,7 @@
+SET LINESIZE 150
+
+COLUMN owner FORMAT A20
+COLUMN directory_name FORMAT A25
+COLUMN directory_path FORMAT A80
+
+SELECT * FROM   dba_directories ORDER BY owner, directory_name;
