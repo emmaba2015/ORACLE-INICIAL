@@ -1,0 +1,11 @@
+--Usuarios Conectados.
+
+select count(*) from v$session where type <> 'BACKGROUND';
+
+--Usuarios Conectados activos
+
+select count(*) from v$session where type <> 'BACKGROUND' and status = 'ACTIVE';
+
+--Cantidad de Usuarios Creados a nivel de base de datos
+
+SELECT count(*) as "Cantidad Usuarios" FROM dba_users;
