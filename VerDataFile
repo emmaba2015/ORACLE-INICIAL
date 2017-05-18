@@ -1,0 +1,20 @@
+--Espacio total, ocupado y libre por datafile
+
+set linesize 150
+COLUMN file_name format A60
+COLUMN free_space_mb format 999999.90
+COLUMN allocated_mb format 999999.90
+COLUMN used_mb format 999999.90
+
+SELECT SUBSTR (df.NAME, 1, 60) file_name, df.bytes / 1024 / 1024 allocated_mb,
+((df.bytes / 1024 / 1024) - NVL (SUM (dfs.bytes) / 1024 / 1024, 0))
+used_mb,
+NVL (SUM (dfs.bytes) / 1024 / 1024, 0) free_space_mb
+FROM v$datafile df, dba_free_space dfs
+WHERE df.file# = dfs.file_id(+)
+GROUP BY dfs.file_id, df.NAME, df.file#, df.bytes
+UNION ALL
+select file_name, bytes/1024/1024 allocated_mb,user_bytes/1024/1024 used_mb,
+((bytes/1024/1024) - (user_bytes/1024/1024)) free_space_mb
+from dba_temp_files;
+); 
