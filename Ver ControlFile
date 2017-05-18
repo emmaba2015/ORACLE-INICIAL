@@ -1,0 +1,3 @@
+--Ver ControlFile
+col name format A40;
+select * from v$controlfile;
