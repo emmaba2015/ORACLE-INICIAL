@@ -1,0 +1,122 @@
+--Se chequean las sesiones de un determinado usuario:
+
+SET LINESIZE 100
+COLUMN spid FORMAT A10
+COLUMN username FORMAT A10
+COLUMN program FORMAT A45
+
+SELECT s.inst_id,
+       s.sid,
+       s.serial#,
+       p.spid,
+       s.username,
+       s.program
+FROM   gv$session s
+       JOIN gv$process p ON p.addr = s.paddr AND p.inst_id = s.inst_id
+WHERE  s.type != 'BACKGROUND'
+and s.username='CTCSAL';
+
+-- Con esto se puede ver que tipo de bloqueos (pueden ser solo lockeos y no bloqueos) hay:
+
+SELECT username U_NAME, owner OBJ_OWNER,
+object_name, object_type, s.osuser,
+DECODE(l.block,
+  0, 'Not Blocking',
+  1, 'Blocking',
+  2, 'Global') STATUS,
+  DECODE(v.locked_mode,
+    0, 'None',
+    1, 'Null',
+    2, 'Row-S (SS)',
+    3, 'Row-X (SX)',
+    4, 'Share',
+    5, 'S/Row-X (SSX)',
+    6, 'Exclusive', TO_CHAR(lmode)
+  ) MODE_HELD,
+s.sid,
+s.serial#
+FROM gv$locked_object v, dba_objects d,
+gv$lock l, gv$session s
+WHERE v.object_id = d.object_id
+AND (v.object_id = l.id1)
+AND v.session_id = s.sid
+ORDER BY username, session_id;
+
+-- Luego identificaa la misma se mata con:
+
+ALTER SYSTEM KILL SESSION 'sid,serial#';
+
+-- O con:
+
+ALTER SYSTEM KILL SESSION 'sid,serial#' IMMEDIATE;
+
+-- Esto sirve cuando se sabe cual es la sesión problemática. Si no se sabe se chequea con lo siguiente para identificar si una sesión esta bloqueando a otra (http://www.oraclerecipes.com/monitoring/find-blocking-sessions/):
+
+SELECT s1.username || '@' || s1.machine
+    || ' ( SID=' || s1.sid || ' )  is blocking '
+    || s2.username || '@' || s2.machine || ' ( SID=' || s2.sid || ' ) ' AS blocking_status
+    FROM v$lock l1, v$session s1, v$lock l2, v$session s2
+    WHERE s1.sid=l1.sid AND s2.sid=l2.sid
+    AND l1.BLOCK=1 AND l2.request > 0
+    AND l1.id1 = l2.id1
+    AND l1.id2 = l2.id2;
+
+-- Otra forma que suele ayudar es identificar la session de esta manera:
+
+select sid, opname, target, round(sofar/totalwork*100,2) "%"
+from v$session_longops
+where sofar < totalwork;
+
+set linesize 300
+col OPNAME format a20
+select SID, OPNAME, to_char(START_TIME,'dd-Mon-rr hh24:mi:ss') Start_Time, to_char(LAST_UPDATE_TIME,'dd-Mon-rr hh24:mi:ss') Last_Update, SOFAR, TOTALWORK
+from v$session_longops
+where SOFAR < TOTALWORK;
+
+-- Si se desea ir más alla y ver que sql esta corriendo ese SID, se pueden usar las siguientes consultas:
+
+SELECT distinct ses.username, ses.machine, ses.port, ses.program, ses.module, sql.OBJECT_STATUS, sql.elapsed_time, sql.executions, sql.cpu_time, sql.sql_text FROM v$session ses JOIN v$sql sql ON (sql.sql_id = ses.sql_id) WHERE SID=42;
+
+SELECT
+       b.sql_id,
+       b.address,
+       b.hash_value,
+       b.child_number,
+       b.name param,
+       b.value_string value
+FROM
+       v$sql t JOIN v$sql_bind_capture b ON t.sql_id = b.sql_id
+WHERE
+       b.value_string is not null
+       and t.sql_id = (select s.sql_id from v$session s where s.sid = 42);
+
+SELECT
+       b.sql_txt
+FROM
+       v$sql 
+WHERE  t.sql_id = (select s.sql_id from v$session s where s.sid = 42);
+
+-- OJO DE REEMPLAZAR EL NRO DE SID EN LAS CONSULTAS!
+
+-- Incluso si se desea ir más a fondo se puede utilizar lo siguiente:
+
+select distinct ORACLE_USERNAME, OS_USER_NAME, A.PROCESS, LOCKED_MODE, object_name, A.SESSION_ID, D.sql_text
+from V$LOCKED_OBJECT A, dba_objects B, v$session C, v$sql D
+where A.object_id=B.object_id
+and A.session_id = C.sid
+and C.sql_id = D.sql_id;
+
+select object_id, object_name from dba_objects where object_id in (38584,38403,38393);
+
+select * from V$LOCKED_OBJECT where object_id = '38403';
+select * from V$LOCKED_OBJECT where object_id = '38393';
+select * from V$LOCKED_OBJECT where object_id = '18259';
+
+select sid, serial# from v$session where sid in (382);
+
+SELECT SQL_ADDRESS FROM V$SESSION WHERE SERIAL# = 7482;
+SELECT SQL_ADDRESS,sql_id FROM V$SESSION WHERE SERIAL# = 37627;
+
+Select sql_text from v$sqltext where address = '00000001B0E6DA20';
+Select sql_text, sql_id from v$sqltext where address = '00';
+Select sql_text from v$sqltext where sql_id='125'
