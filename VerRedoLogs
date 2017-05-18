@@ -1,0 +1,6 @@
+--Redo Log Groups y miembros
+col member format A35
+select group#, status,member from v$logfile order by 1;
+
+--Redo Log Groups
+select group#, sequence#, bytes/1048576 TamMb , members, status, archived,  to_char(FIRST_TIME, 'dd-mon-yy HH:MI:SS') from v$log;
