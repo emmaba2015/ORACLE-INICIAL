@@ -8,7 +8,7 @@
 
   Para entrar como usuario sysdba
   
-"sqlplus / as sysdba"
+sqlplus "/ as sysdba"
 
   Comando CONNECT
   En sqlplus se indicará con el comando CONNECT, que tiene la siguiente sintaxis:
