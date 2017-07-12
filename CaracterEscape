@@ -1,0 +1,15 @@
+
+-- Como ya bien sabemos % y _ son caracteres de escape que sirven para generar patrones.
+
+
+% = equivale a O o N caracteres
+
+_= equivale a O o 1 caracter
+
+
+--Nos podemos encontrar en situaciones en las que en el WHERE de una consulta queramos buscar caracteres que contengan _ o % por lo 
+  que necesitaremos un caracter de escape que le diga a Oracle que esos dos caracteres no son caracteres especiales. 
+
+-- Se hace de esta forma:
+
+SELECT name FROM emp WHERE id LIKE '%\%%' ESCAPE '\';
