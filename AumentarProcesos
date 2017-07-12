@@ -1,0 +1,6 @@
+
+-- Para revisar el parámetro processes de nuestra BD:
+select value from v$parameter where name='processes';
+
+-- Para aumentar el valor de este parametro (en este caso a 300):
+alter system set processes=300 scope=spfile;
