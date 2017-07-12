@@ -1,0 +1,5 @@
+
+-- Ver cantidad de registros de un usuario ordenados por usuario y tabla.
+
+
+select owner, table_name, NUM_ROWS from dba_tables where owner='ACOBACK' order by owner, table_name;
