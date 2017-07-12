@@ -1,0 +1,3 @@
+-- Ver cantidad de objetos de un usuario ordenados por usuario.
+
+select owner, object_type, count(*) from dba_objects where owner='ACOBACK' GROUP BY OBJECT_TYPE, owner order by owner;
