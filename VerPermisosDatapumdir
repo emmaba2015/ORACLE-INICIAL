@@ -1,3 +1,6 @@
  -- Chequeamos los permisos que tienen los usuarios sobre los directories
 
 SELECT * FROM user_tab_privs WHERE table_name = 'DATAPUMPDIR'; 
+
+-- asignamos permisos al usuario correspondiente, para que pueda acceder al directory específico
+GRANT READ, WRITE on DIRECTORY DATAPUMPDIR to USUARIO1;
