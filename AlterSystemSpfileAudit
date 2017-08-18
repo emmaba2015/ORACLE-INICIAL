@@ -1,0 +1,19 @@
+SQL> alter system set processes=200 scope=spfile;
+
+System altered.
+
+SQL> alter system set parallel_degree_policy=manual;
+
+System altered.
+
+SQL> alter system set result_cache_mode=manual scope=memory;
+
+System altered.
+
+SQL> select username,sql_text from dba_audit_trail where sql_text like 'alter system%';
+
+USERNAME   SQL_TEXT
+---------- ----------------------------------------------------------------------
+ADAM       alter system set processes=200 scope=spfile
+ADAM       alter system set parallel_degree_policy=manual
+ADAM       alter system set result_cache_mode=manual scope=memory
