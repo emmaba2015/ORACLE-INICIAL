@@ -1,3 +1,5 @@
+CREATE PFILE = 'my_init.ora' FROM SPFILE = 's_params.ora';
+
 -- En Linux - Unix: 
 
 CREATE PFILE='/copia_oracle/spfile_editable.ora' FROM SPFILE; 
