@@ -1,0 +1,6 @@
+-- Arrancar la base con PFILE
+STARTUP PFILE = '/u01/oracle/dbs/init.ora'
+
+-- Arrancar la base con SPFILE
+STARTUP PFILE = '/u01/oracle/dbs/spf_init.ora'
+
