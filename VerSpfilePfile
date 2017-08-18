@@ -1,0 +1,11 @@
+-- Para ver si la sesion arranco con SPFILE SPFILE
+SELECT DECODE(value, NULL, 'PFILE', 'SPFILE') "Init File Type" 
+FROM sys.v_$parameter WHERE name = 'spfile';
+
+-- Ver ubicacion spfile
+select name,value from V$parameter where name like 'spfile' order by name;
+
+-- Otra forma de ver el parametro spfile
+
+show parameter spfile;
+
