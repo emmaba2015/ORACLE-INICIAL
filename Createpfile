@@ -1,0 +1,13 @@
+-- En Linux - Unix: 
+
+CREATE PFILE='/copia_oracle/spfile_editable.ora' FROM SPFILE; 
+
+
+-- En Windows es igual salvo por la ruta que llevará la letra de unidad y las barras separadoras: 
+
+Código:
+
+CREATE PFILE='c:\copia_oracle\spfile_editable.ora' FROM SPFILE; 
+
+
+
