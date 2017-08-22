@@ -1,0 +1,25 @@
+-- Ver valores SGA 
+SELECT SGA_SIZE, SGA_SIZE_FACTOR, ESTD_DB_TIME FROM v$sga_target_advice ORDER BY SGA_SIZE_FACTOR
+SGA_SIZE SGA_SIZE_FACTOR ESTD_DB_TIME;
+
+-- Modificar el tamaño de la memoria SGA
+
+ALTER system SET SGA_TARGET=280M;
+
+-- Hacer definitivo el cambio en la memoria SGA
+
+ALTER system SET SGA_TARGET=280M scope=spfile;
+
+-- Modificar valor sga_max_size 
+
+alter system set sga_max_size=900M scope=spfile;
+
+-- Ver valor actual de la memoria SGA
+
+show parameter sga_t;
+
+-- Ver valor maximo soportado por la memoria SGA
+
+show parameter sga_max;
+
+
