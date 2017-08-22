@@ -1,0 +1,16 @@
+-- Consulta ver total memory
+
+select * from v$memory_target_advice order by memory_size;
+
+-- Consulto parametro todas las memory 
+
+show parameter target
+
+-- Consulto parametro todas las memory target
+
+show parameter memory_target
+
+-- Consultar si el parametro es estatico o dinamico (memory_max_target)
+
+select name,isses_modifiable,issys_modifiable,isinstance_modifiable 
+from v$parameter where name like 'memory_max_target';
