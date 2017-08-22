@@ -1,0 +1,20 @@
+-- Ver valores de la memory PGA
+
+SELECT PGA_TARGET_FOR_ESTIMATE,PGA_TARGET_FACTOR,ESTD_EXTRA_BYTES_RW FROM v$pga_target_advice;
+PGA_TARGET_FOR_ESTIMATE PGA_TARGET_FACTOR ESTD_EXTRA_BYTES_RW;
+
+-- Modificar valor PGA
+
+ALTER system SET PGA_AGGREGATE_TARGET=246624256 scope=memory;
+
+-- Modificar valor PGA y hacer el cambio definitivo 
+
+ALTER system SET PGA_AGGREGATE_TARGET=16777216 scope=spfile;
+
+-- Para obtener unas estadísticas de la PGA se puede usar la vista V$PGASTAT:
+
+select * from v$pgastat;
+
+-- La vista V$PGA_TARGET_ADVICE es muy útil para predecir cómo cambiaría el comportamiento de la Instancia si modificamos le valor de PGA_AGGREGATE_TARGET. Para que esta vista recopile información el parámetro STATISTICS_LEVEL debe estar configurado a TYPICAL o ALL:
+
+select pga_target_for_estimate, pga_target_factor,estd_pga_cache_hit_percentage, estd_overalloc_count from v$pga_target_advice;
