@@ -1,14 +1,18 @@
-  PARÁMETROS DE LA BASE DE DATOS
-  Vista que muestra los parámetros generales de Oracle:
+-- PARÁMETROS DE LA BASE DE DATOS
+-- Vista que muestra los parámetros generales de Oracle:
 
 SELECT * FROM v$system_parameter;
   o también
 
 SHOW PARAMETERS valor_a_buscar;
 
-  PRODUCTOS ORACLE INSTALADOS Y LA VERSIÓN
+SELECT p.name, p.type, p.value, p.isses_modifiable as SES_MOD, p.issys_modifiable as SYS_MOD, 
+p.isinstance_modifiable as INS_MOD FROM v$parameter p ORDER BY p.name;
+
+-- PRODUCTOS ORACLE INSTALADOS Y LA VERSIÓN
 
 SELECT * FROM product_component_version;
   OBTENER LA IP DEL SERVIDOR DE LA BASE DE DATOS ORACLE DATABASE
 
 SELECT utl_inaddr.get_host_address IP FROM DUAL;
+
