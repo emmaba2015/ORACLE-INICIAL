@@ -1,0 +1,13 @@
+-- Ver Registro historicos de path aplicados
+
+select * from sys.registry$history;
+
+-- Para versiones anteriores a 12c
+
+select * from registry$sqlpatch;
+
+-- Para verificar fuera de sqlplus
+
+cd $ORACLE_HOME/OPatch 
+./opatch lsinventory
+
