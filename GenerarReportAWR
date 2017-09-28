@@ -1,0 +1,15 @@
+-- Aclaracion: 
+-- Deben tomarse periodos de inicio y fin donde en el medio de ellos no se haya generado un shutdown de la base.
+-- En algunas ocasiones es conveniente realizar un shutdown inmediate y startup de la base para limpiar las estadisticas y 
+   permitir que se generen correctamente. Mas que nada en versiones Standard de Oracle.
+-- Script:
+export ORACLE_SID=SIDBASE
+sqlplus / as sysdba
+@$ORACLE_HOME/rdbms/admin/awrrpti.sql
+Indico formato del reporte: html
+Indico ID de la base:2860287401 
+Indico ID de la instancia: 1
+Indico ID Begin Snap: 19661 
+Indico ID End Snap: 19685  
+Indico Nombre Reporte: REPORT_SID_27092017.html
+-- Se genera el reporte.
