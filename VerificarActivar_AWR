@@ -1,0 +1,9 @@
+-- Verificar los valores de los siguientes parametros
+show parameter timed;
+-- (true)
+show parameter control_management_pack_access;
+-- (diagnostic)
+
+-- Si el pack acces nos da NONE modificarlo de la siguiente manera:
+
+alter system set control_management_pack_access = 'DIAGNOSTIC+TUNING';
