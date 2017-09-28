@@ -1,0 +1,8 @@
+-- Cambiar intervalos de snapshot
+exec dbms_workload_repository.modify_snapshot_settings ( interval => 60, retention => 43200);
+
+-- interval = minutes
+-- retention = seconds
+
+-- Ver el valor de los intervalos
+select * from dba_hist_wr_control;
