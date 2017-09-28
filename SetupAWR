@@ -1,0 +1,10 @@
+-- Para ver el modo seteado
+show parameter statistics_level;
+
+-- Modo Active	
+alter system set statistics_level = typical;
+alter system set statistics_level = all;
+
+-- Modo De-active	
+alter system set statistics_level = basic;
+
