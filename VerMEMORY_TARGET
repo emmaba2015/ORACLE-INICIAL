@@ -1,0 +1,5 @@
+-- Calcular MEMORY_TARGET
+SELECT sga.value + GREATEST(pga.value, max_pga.value) AS memory_target
+FROM (SELECT TO_NUMBER(value) AS value FROM v$parameter WHERE name = 'sga_target') sga,
+     (SELECT TO_NUMBER(value) AS value FROM v$parameter WHERE name = 'pga_aggregate_target') pga,
+     (SELECT value FROM v$pgastat WHERE name = 'maximum PGA allocated') max_pga;
