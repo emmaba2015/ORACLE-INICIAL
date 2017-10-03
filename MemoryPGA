@@ -15,6 +15,7 @@ ALTER system SET PGA_AGGREGATE_TARGET=16777216 scope=spfile;
 
 select * from v$pgastat;
 
--- La vista V$PGA_TARGET_ADVICE es muy útil para predecir cómo cambiaría el comportamiento de la Instancia si modificamos le valor de PGA_AGGREGATE_TARGET. Para que esta vista recopile información el parámetro STATISTICS_LEVEL debe estar configurado a TYPICAL o ALL:
+-- La vista V$PGA_TARGET_ADVICE es muy útil para predecir cómo cambiaría el comportamiento de la Instancia si modificamos le valor de 
+PGA_AGGREGATE_TARGET. Para que esta vista recopile información el parámetro STATISTICS_LEVEL debe estar configurado a TYPICAL o ALL:
 
 select pga_target_for_estimate, pga_target_factor,estd_pga_cache_hit_percentage, estd_overalloc_count from v$pga_target_advice;
