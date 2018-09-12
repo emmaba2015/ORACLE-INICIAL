@@ -1,0 +1,5 @@
+-- Ver listado y detalle de programas instalados de ORACLE
+
+cd $ORACLE_HOME/OPatch/opatch 
+
+./lsinventory -detail > lsinv_xxxxx_detail.txt 
