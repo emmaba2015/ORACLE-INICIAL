@@ -1,0 +1,3 @@
+-- Ver version de opatch utlizada.
+cd $ORACLE_HOME/OPatch/opatch 
+./opatch version
