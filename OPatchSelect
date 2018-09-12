@@ -1,0 +1,3 @@
+-- Ver patch aplicados
+
+select * from sys.registry$history;
