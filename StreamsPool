@@ -1,0 +1,9 @@
+-- Consultar valor parametro Stream Pool Size
+
+
+SQL> COLUMN COMPONENT FORMAT A25;
+SQL> SELECT component,current_size,user_specified_size FROM v$sga_dynamic_components;
+
+SQL> select POOL,name, BYTES from v$sgastat where pool = 'streams pool'; 
+     
+SQL> desc v$streams_pool_advice;
