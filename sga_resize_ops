@@ -1,0 +1,21 @@
+SQL> col sgares_parameter head PARAMETER for a25 truncate
+SQL> col sgares_component head COMPONENT for a28 truncate
+SQL> set lines 200
+SQL> set pages 999
+ 
+SELECT
+component  sgares_component
+, oper_type
+, oper_mode
+, parameter  sgares_parameter
+, initial_size
+, target_size
+, final_size
+, status
+, start_time
+, end_time
+FROM
+v$sga_resize_ops
+ORDER BY
+start_time
+/
