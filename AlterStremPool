@@ -1,0 +1,4 @@
+
+-- Para modificar dicho parametro:
+
+alter system set streams_pool_size = 10M scope = both;
