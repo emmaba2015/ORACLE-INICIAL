@@ -1,0 +1,13 @@
+-- Genera comandos para crear Tablespaces
+select 'create tablespace ' || df.tablespace_name || chr(10)
+ || ' datafile ''' || df.file_name || ''' size ' || df.bytes 
+ || decode(autoextensible,'N',null, chr(10) || ' autoextend on maxsize ' 
+ || maxbytes) 
+ || chr(10) 
+ || 'default storage ( initial ' || initial_extent 
+ || decode (next_extent, null, null, ' next ' || next_extent )
+ || ' minextents ' || min_extents
+ || ' maxextents ' ||  decode(max_extents,'2147483645','unlimited',max_extents) 
+ || ') ;'
+ from dba_data_files df, dba_tablespaces t
+ where df.tablespace_name=t.tablespace_name ;
