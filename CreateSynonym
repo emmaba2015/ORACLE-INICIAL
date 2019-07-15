@@ -1,0 +1,6 @@
+-- Primero se otorga el permiso para que cree synonimos sobre tablas u objetos de otro esquem
+
+GRANT CREATE SYNONYM to desarrollo; 
+
+-- Se crea un sinonimo sobre la tabla de otro esquema.
+CREATE OR REPLACE SYNONYM LABTRAB FOR TABLA.LABTRAB;
