@@ -1,0 +1,18 @@
+-- Listar todas las tablas en la base de datos de Oracle, propiedad del usuario actual de Oracle:
+
+-- La siguiente consulta devuelve una lista de todas las tablas que son propiedad del usuario actual.
+
+SELECT table_name FROM user_tables;
+
+-- Listar todas las tablas en la base de datos Oracle, a las que accede el usuario actual:
+
+-- La siguiente consulta enumera todas las tablas en oracle a las que puede acceder el usuario actual.
+
+SELECT owner, table_name FROM all_tables;
+
+-- La columna Propietario muestra el nombre del propietario de la tabla. La tabla user_tables no tiene columna propietaria.
+Listar todas las tablas en la base de datos Oracle (base de datos completa):
+
+-- Para obtener una lista de todas las tablas en la base de datos de Oracle (base de datos completa), utilice la siguiente consulta.
+
+SELECT owner, table_name FROM dba_tables;
