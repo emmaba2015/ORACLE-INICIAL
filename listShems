@@ -1,0 +1,23 @@
+-- Ver todos los esquemas en una base ORACLE.
+
+select distinct
+   owner
+from
+   dba_segments
+where
+   owner in
+   (select username
+    from dba_users
+    where default_tablespace not in ('SYSTEM','SYSAUX')
+   )
+;
+
+o tambien:
+
+select distinct
+   owner
+from
+   dba_segments
+where
+   owner not in (
+'SYSTEM', 'XDB', 'SYS', 'TSMSYS', 'MDSYS', 'EXFSYS', 'WMSYS', 'ORDSYS', 'OUTLN', 'DBSNMP');
