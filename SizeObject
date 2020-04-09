@@ -1,0 +1,32 @@
+-- Paso 1
+Incluye los tamaños de los archivos de datos en la búsqueda. El tamaño total incluye tablas, campos, procedimientos almacenados y 
+otros objetos de la base de datos. Calcula el tamaño de la vista "dba_data_files" como sigue:
+
+SELECT SUM(bytes)/1024/1024/1024 data_size from dba_data_files;
+
+-- Paso 2
+-- Calcula el tamaño de los archivos temporales. Estos almacenan datos durante el procesamiento pero no es permanente. Calcula el 
+tamaño del archivo temporal como sigue:
+
+select nvl(sum(bytes),0)/1024/1024/1024 temp_size from dba_temp_files;
+
+-- Paso 3
+-- Obtén el tamaño del redo log. Este almacena cualquier cambio en la base de datos antes de ser aplicados en los datos actuales 
+de la base. Esto ofrece una manera de almacenar la base de datos a su estado original previo a un extracto diseñado para modificar
+cualquier información.
+
+select sum(bytes)/1024/1024/1024 redo_size from sys.v_$log;
+
+-- Paso 4
+-- Extrae el tamaño del archivo de control usado por Oracle usando la vista V$CONTROLFILE. Esta vista se usa para obtener información 
+del esquema de la base de datos y los objetos contenidos en la misma.
+
+-- El extracto seleccionado para obtener el tamaño del archivo de control es:
+
+select sum(BLOCK_SIZE*FILE_SIZE_BLKS)/1024/1024/1024 controlfile_size from v$controlfile;
+
+-- Paso 5
+-- Combina los extractos seleccionados para calcular el tamaño de la base de datos. El resultado corresponde al tamaño total de la 
+base de datos en gigabytes:
+
+select d.data_sizeT.temp_sizeR.redo_sizeC.controlfile_size “Database Size in GB” from ( select sum(bytes)/1024/1024/1024 data_size from dba_data_files) d, ( select nvl(sum(bytes),0)/1024/1024/1024 temp_size from dba_temp_files ) t, ( select sum(bytes)/1024/1024/1024 redo_size from sys.v_$log ) r, ( select sum(BLOCK_SIZE*FILE_SIZE_BLKS)/1024/1024/1024 controlfile_size from v$controlfile) c;
