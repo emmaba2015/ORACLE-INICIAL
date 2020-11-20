@@ -1,0 +1,20 @@
+-- Parámetro Dumpfile, debe especificar el nombre con %U para generar el dumpfile con el número de secuencia del 01 al 99.
+
+expdp scott/tiger@orcl schemas=SCOTT directory=TEST_DIR parallel=4 dumpfile=SCOTT_%U.dmp logfile=expdpSCOTT.log
+
+impdp scott/tiger@orcl schemas=SCOTT directory=TEST_DIR parallel=4 dumpfile=SCOTT_%U.dmp logfile=impdpSCOTT.log
+
+ -- En Oracle 12.2 se usa algo adicional:
+% U se especifica de 01 a 99. Se utiliza como versión anterior compatible.
+% L,% l se usa desde 01-99 también se extiende hasta 2147483646.
+
+También se incluye un parámetro sustituto
+
+% d,% D: el día actual del mes en formato DD.
+% m,% M: el mes actual en formato MM.
+% y,% Y: el año actual en formato AAAA.
+% t,% T: la fecha actual en formato AAAAMMDD.
+
+-- Podemos utilizar el parametro paralell para escribir en diferentes directorios
+
+expdp hr FULL=YES DUMPFILE=dpump_dir1:full1%U.dmp, dpump_dir2:full2%U.dmp FILESIZE=2G PARALLEL=3 LOGFILE=dpump_dir1:expfull.log JOB_NAME=expfull
