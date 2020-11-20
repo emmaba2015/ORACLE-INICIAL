@@ -1,0 +1,5 @@
+-- Este parámetro es útil cuando desea obtener el tamaño aproximado del archivo de volcado. Suponga que solo tiene un espacio limitado disponible en el disco y 
+si desea verificar si su volcado encajará en el espacio disponible, entonces puede usar este parámetro para verificar o estimar el tamaño del volcado al realizar 
+la exportación real.
+
+expdp system/oracle TABLESPACES=USERS estimate_only=YES
