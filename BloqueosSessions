@@ -1,0 +1,85 @@
+-- Ver objetos bloqueados 
+
+SELECT /*+ rule */ s.username,
+decode(l.type,'TM','TABLE LOCK',
+'TX','ROW LOCK',
+NULL) LOCK_LEVEL,
+o.owner,o.object_name,o.object_type,
+s.sid,s.serial#,s.terminal,s.machine,s.program,s.osuser
+FROM v$session s,v$lock l,dba_objects o
+WHERE l.sid = s.sid
+AND l.id1 = o.object_id(+)
+AND s.username is NOT Null;
+
+-- sesión de asesinatos
+alter system kill session'50,492';
+
+-- Las siguientes son tablas relacionadas
+
+SELECT * FROM v$lock;
+SELECT * FROM v$sqlarea;
+SELECT * FROM v$session;
+SELECT * FROM v$process ; 
+SELECT * FROM v$locked_object; 
+SELECT * FROM all_objects; 
+SELECT * FROM v$session_wait;
+
+--  1. Encuentre la información de la sesión del objeto bloqueado y el nombre del objeto bloqueado
+
+SELECT l.session_id sid, s.serial#, l.locked_mode,l.oracle_username, 
+l.os_user_name,s.machine, s.terminal, o.object_name, s.logon_time
+FROM v$locked_object l, all_objects o, v$session s
+WHERE l.object_id = o.object_id
+AND l.session_id = s.sid
+ORDER BY sid, s.serial# ;
+
+-- 2. Verifique el sid, número de serie, os_user_name, nombre de máquina, terminal y declaraciones ejecutadas de la sesión de la tabla bloqueada
+r
+SELECT l.session_id sid, s.serial#, l.locked_mode, l.oracle_username, s.user#,
+l.os_user_name,s.machine, s.terminal,a.sql_text, a.action 
+FROM v$sqlarea a,v$session s, v$locked_object l
+WHERE l.session_id = s.sid
+AND s.prev_sql_addr = a.address 
+ORDER BY sid, s.serial#;
+
+-- 3. Encuentre el sid, número de serie, nombre_usuario_so, nombre_máquina, terminal de la tabla de bloqueo, tipo de bloqueo, modo
+
+SELECT s.sid, s.serial#, s.username, s.schemaname, s.osuser, s.process, s.machine,
+s.terminal, s.logon_time, l.type
+FROM v$session s, v$lock l
+WHERE s.sid = l.sid
+AND s.username IS NOT NULL
+ORDER BY sid;
+
+
+-- Esta declaración encontrará todos los bloqueos generados por las declaraciones DML en la base de datos, y también puede encontrar que
+-- Cualquier instrucción DML en realidad genera dos bloqueos, uno es un bloqueo de tabla y otro es un bloqueo de fila.
+-- Matar comando
+
+alter system kill session 'sid,serial#'
+SELECT /*+ rule */ s.username, 
+decode(l.type,'TM','TABLE LOCK', 
+'TX','ROW LOCK', 
+NULL) LOCK_LEVEL, 
+o.owner,o.object_name,o.object_type, 
+s.sid,s.serial#,s.terminal,s.machine,s.program,s.osuser 
+FROM v$session s,v$lock l,dba_objects o 
+WHERE l.sid = s.sid 
+AND l.id1 = o.object_id(+) 
+AND s.username is NOT NULL;
+
+-- Si se producen bloqueos en espera, es posible que deseemos saber quién bloqueó la mesa y causó la espera.
+-- La siguiente declaración puede consultar quién ha bloqueado la tabla y quién está esperando.
+-- El resultado de la consulta anterior es una estructura de árbol. Si hay nodos secundarios, significa que hay una espera.
+-- Si desea saber qué segmento de reversión usa el bloqueo, también puede asociarlo con V $ rollname, donde xidusn es el USN del segmento de reversión
+
+col user_name format a10
+col owner format a10
+col object_name format a10
+col object_type format a10
+SELECT /*+ rule */ lpad(' ',decode(l.xidusn ,0,3,0))||l.oracle_username User_name, 
+o.owner,o.object_name,o.object_type,s.sid,s.serial# 
+FROM v$locked_object l,dba_objects o,v$session s 
+WHERE l.object_id=o.object_id 
+AND l.session_id=s.sid 
+ORDER BY o.object_id,xidusn DESC;
