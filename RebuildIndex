@@ -1,0 +1,16 @@
+--Ver Indices obsoletos
+
+select index_name, status from dba_indexes where status ='UNUSABLE';
+-- Rebuild Index
+
+ALTER INDEX HR1.X1ZX31 REBUILD; 
+
+--Armar alter Rebuild Index
+
+SELECT 'ALTER INDEX ' || INDEX_NAME || ' REBUILD;'
+FROM USER_INDEXES
+WHERE STATUS = 'UNUSABLE';
+
+--Ver registros huerfanos:
+SELECT DISTINCT codempl FROM HR1.emp WHERE codempl NOT IN (SELECT NUDOSS FROM HR1.empdpto);
+
